@@ -817,9 +817,15 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
         </div>
 
         <div class="form-group">
-          <label>🎁 ¿Tienes otros ahorros o bonos extras?</label>
-          <input type="text" id="cot-extras" placeholder="Ej: 3.000.000 (opcional)" oninput="formatMoney(this)">
-          <div class="hint">Bonos, liquidación, devolución de impuestos… cualquier extra suma.</div>
+          <label>💵 ¿Vas a recibir dinero extra mientras pagas el apartamento?</label>
+          <input type="text" id="cot-extras" placeholder="Ej: 3.000.000 (opcional)" oninput="formatMoney(this);toggleExtrasFecha()">
+          <div class="hint">Bonificaciones, liquidación, devolución de impuestos, venta de un activo… cualquier ingreso adicional que sepas que te llegará durante el plazo del proyecto.</div>
+        </div>
+
+        <div class="form-group" id="cot-extras-fecha-group" style="display:none">
+          <label>📅 ¿En qué mes lo recibirás?</label>
+          <input type="month" id="cot-extras-fecha">
+          <div class="hint">Así sabemos exactamente en qué punto de tu plan de pagos aplicar ese abono.</div>
         </div>
 
         <div class="empathy-note">Tranquilo, esto es solo para estimar. No guardamos datos sensibles.</div>
@@ -1305,6 +1311,17 @@ function validateEmail(e){
   return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e.trim());
 }
 
+function toggleExtrasFecha(){
+  const monto=parseMoney(document.getElementById('cot-extras').value);
+  document.getElementById('cot-extras-fecha-group').style.display=monto>0?'block':'none';
+}
+function fmtMonthYear(v){
+  if(!v)return '';
+  const [y,m]=v.split('-');
+  const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return meses[parseInt(m)-1]+' '+y;
+}
+
 function calcularCotizacion(){
   const p=currentProject;
   const empleo=document.getElementById('cot-empleo').value;
@@ -1312,6 +1329,7 @@ function calcularCotizacion(){
   const separacion=parseMoney(document.getElementById('cot-separacion').value);
   const cuotaComoda=parseMoney(document.getElementById('cot-cuotaComoda').value);
   const extras=parseMoney(document.getElementById('cot-extras').value);
+  const extrasFecha=document.getElementById('cot-extras-fecha').value;
   const usarPrimas=document.querySelector('#boost-primas input').checked&&empleo==='empleado';
   const usarCesantias=document.querySelector('#boost-cesantias input').checked&&empleo==='empleado';
 
@@ -1347,7 +1365,7 @@ function calcularCotizacion(){
   planCalculado={
     proyecto:p.name, constructora:p.constructor, precio:p.price,
     metaInicial, cuotaTradicional, cuotaInteligente, ahorroTotal,
-    separacion, cuotaComoda, extras, usarPrimas, usarCesantias,
+    separacion, cuotaComoda, extras, extrasFecha, usarPrimas, usarCesantias,
     empleo, ingresos, llegaAMeta, brecha, cuotaNecesaria
   };
 
@@ -1386,7 +1404,7 @@ function calcularCotizacion(){
         <div style="background:var(--light);padding:12px;border-radius:10px"><small style="color:var(--gray)">Cuota cómoda</small><br><strong>$${fmt(cuotaComoda)}/mes</strong></div>
         ${usarPrimas?`<div style="background:#ECFDF5;padding:12px;border-radius:10px"><small style="color:#065F46">Primas activas</small><br><strong style="color:#065F46">$${fmt(totalPrimas)}</strong></div>`:''}
         ${usarCesantias?`<div style="background:#ECFDF5;padding:12px;border-radius:10px"><small style="color:#065F46">Cesantías activas</small><br><strong style="color:#065F46">$${fmt(totalCesantias)}</strong></div>`:''}
-        ${extras>0?`<div style="background:var(--light);padding:12px;border-radius:10px"><small style="color:var(--gray)">Extras aportados</small><br><strong>$${fmt(extras)}</strong></div>`:''}
+        ${extras>0?`<div style="background:var(--light);padding:12px;border-radius:10px"><small style="color:var(--gray)">Abono extra${extrasFecha?' · '+fmtMonthYear(extrasFecha):''}</small><br><strong>$${fmt(extras)}</strong></div>`:''}
       </div>
       <p style="margin-top:14px;font-size:.88rem;color:var(--gray)">Al entregar el apto (${p.delivery}), inicia tu crédito hipotecario. Te ayudamos a conseguir el mejor.</p>
     </div>
