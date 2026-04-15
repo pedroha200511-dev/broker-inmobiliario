@@ -868,7 +868,7 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
       <div class="step" id="cot-step4">
         <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
         <div class="progress-label">Último paso · Contacto directo</div>
-        <h3 class="q-title">¿Cuándo prefieres que te contacten?</h3>
+        <h3 class="q-title">Déjanos tus datos y te contactamos</h3>
         <p class="q-sub">Solo 4 datos. Sin preguntas tediosas.</p>
 
         <div class="form-group">
@@ -885,19 +885,16 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
         </div>
 
         <div class="form-group">
-          <label>Correo electrónico</label>
-          <input type="email" id="lead-email" placeholder="tu@email.com" oninput="clearErr('err-email',this)">
-          <div class="error-msg" id="err-email">Correo inválido. Usa un formato como nombre@dominio.com.</div>
+          <label>Confirma tu celular</label>
+          <input type="tel" id="lead-tel2" placeholder="3XX XXX XXXX" maxlength="13" oninput="formatPhoneCO(this);clearErr('err-tel2',this)">
+          <div class="hint">Vuelve a escribir tu número para verificar que esté correcto.</div>
+          <div class="error-msg" id="err-tel2">Los números de celular no coinciden.</div>
         </div>
 
         <div class="form-group">
-          <label>¿Cuándo prefieres que te llamen?</label>
-          <div class="horario-chips">
-            <div class="horario-chip active" onclick="selectHorario(this,'manana')"><span class="emoji">🌅</span>Mañana</div>
-            <div class="horario-chip" onclick="selectHorario(this,'tarde')"><span class="emoji">☀️</span>Tarde</div>
-            <div class="horario-chip" onclick="selectHorario(this,'cuandosea')"><span class="emoji">⏰</span>Cuando sea</div>
-          </div>
-          <input type="hidden" id="lead-horario" value="manana">
+          <label>Correo electrónico</label>
+          <input type="email" id="lead-email" placeholder="tu@email.com" oninput="clearErr('err-email',this)">
+          <div class="error-msg" id="err-email">Correo inválido. Usa un formato como nombre@dominio.com.</div>
         </div>
 
         <div class="empathy-note">Al continuar autorizas el tratamiento de tus datos según nuestra <a onclick="openLegal('habeas')" style="color:var(--primary);cursor:pointer;font-weight:700">política de Habeas Data</a>.</div>
@@ -1321,11 +1318,6 @@ function toggleBoost(chk,id){
   const el=document.getElementById(id);
   if(chk.checked)el.classList.add('active'); else el.classList.remove('active');
 }
-function selectHorario(el,val){
-  el.parentElement.querySelectorAll('.horario-chip').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('lead-horario').value=val;
-}
 function clearErr(id,input){
   document.getElementById(id).classList.remove('show');
   if(input)input.classList.remove('input-error');
@@ -1521,8 +1513,8 @@ function calcularCotizacion(){
 function enviarLead(){
   const nombreEl=document.getElementById('lead-nombre');
   const telEl=document.getElementById('lead-tel');
+  const tel2El=document.getElementById('lead-tel2');
   const emailEl=document.getElementById('lead-email');
-  const horario=document.getElementById('lead-horario').value;
   let ok=true;
   // Nombre
   if(!nombreEl.value.trim()){
@@ -1536,6 +1528,14 @@ function enviarLead(){
     document.getElementById('err-tel').classList.add('show');
     ok=false;
   } else { telEl.classList.remove('input-error'); document.getElementById('err-tel').classList.remove('show'); }
+  // Confirmación de teléfono (debe ser válido y coincidir)
+  const digitsTel=telEl.value.replace(/\D/g,'');
+  const digitsTel2=tel2El.value.replace(/\D/g,'');
+  if(!validatePhoneCO(tel2El.value)||digitsTel!==digitsTel2){
+    tel2El.classList.add('input-error');
+    document.getElementById('err-tel2').classList.add('show');
+    ok=false;
+  } else { tel2El.classList.remove('input-error'); document.getElementById('err-tel2').classList.remove('show'); }
   // Email
   if(!validateEmail(emailEl.value)){
     emailEl.classList.add('input-error');
@@ -1547,12 +1547,11 @@ function enviarLead(){
   const nombre=nombreEl.value.trim();
   const tel=telEl.value;
   const email=emailEl.value.trim();
-  const horarioLbl={manana:'Mañana',tarde:'Tarde',cuandosea:'Cuando sea'}[horario]||horario;
 
   // Construir radiografía financiera del plan
   const pc=planCalculado||{};
   document.getElementById('leadSuccessTitle').textContent='¡Listo! Tu plan está en manos del equipo de '+(pc.proyecto||currentProject.name);
-  document.getElementById('leadSuccessMsg').textContent='Estás muy cerca de recibir las llaves de tu próximo hogar. Te contactaremos en el horario que elegiste.';
+  document.getElementById('leadSuccessMsg').textContent='Estás muy cerca de recibir las llaves de tu próximo hogar. Te contactaremos muy pronto.';
   document.getElementById('leadSummary').innerHTML=`
     <p><strong>Proyecto:</strong> ${currentProject.name}</p>
     <p><strong>Constructora:</strong> ${currentProject.constructor}</p>
@@ -1562,7 +1561,6 @@ function enviarLead(){
     <hr style="margin:10px 0;border:0;border-top:1px solid var(--border)">
     <p><strong>Contacto:</strong> ${nombre} · ${tel}</p>
     <p><strong>Email:</strong> ${email}</p>
-    <p><strong>Horario preferido:</strong> ${horarioLbl}</p>
   `;
   nextStep(5);
   fbq('track','Lead',{content_name:currentProject.name});
