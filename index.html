@@ -908,9 +908,13 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
         <div class="lead-success">
           <div class="icon">🎉</div>
           <h2 id="leadSuccessTitle">¡Listo! Tu plan está en camino</h2>
-          <p id="leadSuccessMsg">Estás muy cerca de recibir las llaves de tu próximo hogar.</p>
+          <p id="leadSuccessMsg">Un asesor te contactará en el menor tiempo posible para acompañarte en el siguiente paso.</p>
           <div class="summary-box" id="leadSummary"></div>
-          <button class="btn-next" style="margin-top:20px;width:100%" onclick="closeModal('cotizadorModal');showSection('credito')">Ahora busca tu mejor crédito →</button>
+          <div style="margin-top:20px;padding:16px 18px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;text-align:left">
+            <p style="font-size:.92rem;color:var(--navy);font-weight:700;margin-bottom:4px">💡 Cuando llegue el momento de tu crédito hipotecario…</p>
+            <p style="font-size:.88rem;color:var(--dark);line-height:1.5">Tranquilo, no tienes que preocuparte por eso ahora. Cuando empieces a buscar tu crédito, también te ayudamos a comparar las mejores opciones del mercado.</p>
+          </div>
+          <button class="btn-next" style="margin-top:20px;width:100%" onclick="closeModal('cotizadorModal')">Entendido, cerrar</button>
         </div>
       </div>
 
@@ -1551,7 +1555,7 @@ function enviarLead(){
   // Construir radiografía financiera del plan
   const pc=planCalculado||{};
   document.getElementById('leadSuccessTitle').textContent='¡Listo! Tu plan está en manos del equipo de '+(pc.proyecto||currentProject.name);
-  document.getElementById('leadSuccessMsg').textContent='Estás muy cerca de recibir las llaves de tu próximo hogar. Te contactaremos muy pronto.';
+  document.getElementById('leadSuccessMsg').textContent='Un asesor te contactará en el menor tiempo posible para acompañarte en el siguiente paso hacia tu nuevo hogar.';
   document.getElementById('leadSummary').innerHTML=`
     <p><strong>Proyecto:</strong> ${currentProject.name}</p>
     <p><strong>Constructora:</strong> ${currentProject.constructor}</p>
