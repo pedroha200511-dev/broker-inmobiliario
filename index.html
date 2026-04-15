@@ -1430,7 +1430,7 @@ function calcularCotizacion(){
   };
 
   const viabilidadBlock = llegaAMeta
-    ? `<div class="gap-ok">✅ <strong>¡Felicidades!</strong> Con este plan cubres el ${((aportesTotales/metaInicial)*100).toFixed(0)}% de tu cuota inicial requerida${aportesTotales>metaInicial?` y tienes <strong>$${fmt(aportesTotales-metaInicial)}</strong> adicionales que te reducen el crédito.`:'.'}</div>`
+    ? `<div class="gap-ok">✅ <strong>¡Felicidades!</strong> Cubres el ${((aportesTotales/metaInicial)*100).toFixed(0)}% de tu cuota inicial${ahorroMensual>0?` y, gracias a tus aportes extra, tu cuota base baja <strong>$${fmt(ahorroMensual)}/mes</strong> comparada al plan tradicional.`:'.'}</div>`
     : `<div class="gap-alert">💡 <strong>¡Casi lo logras!</strong> Estás a un paso de tu meta. Con este plan te faltan <strong>$${fmt(brecha)}</strong>. Para llegar a la meta, tu cuota mensual debería ser de <strong>$${fmt(cuotaNecesaria)}</strong>.<br>¿Quieres ajustar tu cuota mensual o sumar más ahorros para cerrar la brecha?</div>`;
 
   // Filas del plan mes a mes
