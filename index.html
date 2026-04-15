@@ -838,8 +838,8 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
 
         <div class="form-group" id="cot-extras-fecha-group" style="display:none">
           <label>📅 ¿En qué mes lo recibirás?</label>
-          <input type="month" id="cot-extras-fecha">
-          <div class="hint">Así sabemos exactamente en qué punto de tu plan de pagos aplicar ese abono.</div>
+          <select id="cot-extras-fecha"></select>
+          <div class="hint">Solo puedes elegir meses dentro del plazo de pago del proyecto. Así sabemos exactamente en qué punto aplicar tu abono.</div>
         </div>
 
         <div class="empathy-note">Tranquilo, esto es solo para estimar. No guardamos datos sensibles.</div>
@@ -1272,6 +1272,17 @@ function updateFilterBadge(){
 // ======================== COTIZADOR MODAL ========================
 function openCotizador(id){
   currentProject=projects.find(p=>p.id===id);
+  // Resetear campo de abono extra y poblar selector con meses del plan
+  const extrasInput=document.getElementById('cot-extras');
+  if(extrasInput)extrasInput.value='';
+  const selFecha=document.getElementById('cot-extras-fecha');
+  if(selFecha){
+    const sched=buildSchedule(currentProject.months);
+    selFecha.innerHTML='<option value="">Selecciona un mes...</option>'+
+      sched.map(m=>`<option value="${m.key}">${m.label}</option>`).join('');
+  }
+  const grupoFecha=document.getElementById('cot-extras-fecha-group');
+  if(grupoFecha)grupoFecha.style.display='none';
   document.getElementById('cotizadorModal').classList.add('show');
   document.getElementById('projectDetail').innerHTML=`
     <div style="border-radius:12px;overflow:hidden;margin-bottom:18px">
