@@ -833,8 +833,8 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
             <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
             <div class="txt">
               <strong>Incluir mis Cesantías</strong>
-              <span>Consignadas en Febrero de cada año</span>
-              <span class="power">✨ Aporte extra cada febrero que te ayuda a llegar a tu cuota base o incluso a bajarla</span>
+              <span>Consignadas en Marzo de cada año</span>
+              <span class="power">✨ Aporte extra cada marzo que te ayuda a llegar a tu cuota base o incluso a bajarla</span>
             </div>
           </label>
         </div>
@@ -1405,13 +1405,13 @@ function calcularCotizacion(){
   // Schedule mes a mes desde hoy
   const schedule=buildSchedule(meses);
   const mesesPrimas=schedule.filter(m=>m.month===6||m.month===12);
-  const mesesCesantias=schedule.filter(m=>m.month===2);
+  const mesesCesantias=schedule.filter(m=>m.month===3);
 
   // Aportes mes a mes (cuota cómoda × meses)
   const aportesMensuales=cuotaComoda*meses;
   // Primas: un salario en cada junio y diciembre del schedule
   const totalPrimas=usarPrimas?ingresos*mesesPrimas.length:0;
-  // Cesantías: un salario en cada febrero del schedule
+  // Cesantías: un salario en cada marzo del schedule
   const totalCesantias=usarCesantias?ingresos*mesesCesantias.length:0;
   // Cuota TRADICIONAL: solo separación + cuota mensual plana (sin boosts)
   const planTradFaltante=Math.max(0,metaInicial-separacion-extras);
@@ -1445,7 +1445,7 @@ function calcularCotizacion(){
   // Filas del plan mes a mes
   const tableRows=schedule.map((m,i)=>{
     const isPrima=usarPrimas&&(m.month===6||m.month===12);
-    const isCes=usarCesantias&&m.month===2;
+    const isCes=usarCesantias&&m.month===3;
     const isExtra=extras>0&&extrasFecha&&m.key===extrasFecha;
     const isSep=i===0&&separacion>0;
     const mPrima=isPrima?ingresos:0;
