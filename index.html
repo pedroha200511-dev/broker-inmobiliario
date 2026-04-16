@@ -493,18 +493,18 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
     <div class="trust-grid" id="trustGrid" style="grid-template-columns: repeat(3, 1fr);">
 
       <div class="trust-stat">
-        <span class="num" data-target="500">+0</span>
-        <span class="lbl">Personas han encontrado su hogar</span>
+        <span class="num" id="trust-num1" data-target="500">+0</span>
+        <span class="lbl" id="trust-lbl1">Personas han encontrado su hogar</span>
       </div>
 
       <div class="trust-stat">
-        <span class="num" data-target="25">+0</span>
-        <span class="lbl">proyectos disponibles</span>
+        <span class="num" id="trust-num2" data-target="25">+0</span>
+        <span class="lbl" id="trust-lbl2">proyectos disponibles</span>
       </div>
 
       <div class="trust-stat">
-        <span class="num">-15%</span>
-        <span class="lbl">en tu cuota mensual*</span>
+        <span class="num" id="trust-num3">-15%</span>
+        <span class="lbl" id="trust-lbl3">en tu cuota mensual*</span>
       </div>
 
     </div>
@@ -591,28 +591,6 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
   <div class="container">
     <h2 class="section-title">Encuentra el crédito que <strong style="color:var(--primary)">SÍ</strong> se ajusta a ti</h2>
     <p class="section-sub">Analizamos tu perfil y te conectamos con el banco que te dé la tasa más baja. Sin filas, sin enredos.</p>
-
-    <!-- 3 INDICADORES DE CONFIANZA -->
-    <div class="credit-hero-indicators">
-      <div class="credit-indicator">
-        <div class="ico">🏦</div>
-        <div class="num">+7</div>
-        <div class="title">Bancos Aliados</div>
-        <div class="sub">Comparamos las mejores tasas del mercado por ti</div>
-      </div>
-      <div class="credit-indicator">
-        <div class="ico">💻</div>
-        <div class="num">100%</div>
-        <div class="title">Gestión Digital</div>
-        <div class="sub">Radicamos tu solicitud sin que salgas de casa</div>
-      </div>
-      <div class="credit-indicator">
-        <div class="ico">⚡</div>
-        <div class="num">Minutos</div>
-        <div class="title">Respuesta Récord</div>
-        <div class="sub">Resultados de viabilidad con bancos en minutos</div>
-      </div>
-    </div>
 
     <div class="step-host">
       <!-- STEP 1: TIPO -->
@@ -765,6 +743,29 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
         </div>
       </div>
     </div>
+
+    <!-- 3 INDICADORES DE CONFIANZA -->
+    <div class="credit-hero-indicators">
+      <div class="credit-indicator">
+        <div class="ico">🏦</div>
+        <div class="num">+7</div>
+        <div class="title">Bancos Aliados</div>
+        <div class="sub">Comparamos las mejores tasas del mercado por ti</div>
+      </div>
+      <div class="credit-indicator">
+        <div class="ico">💻</div>
+        <div class="num">100%</div>
+        <div class="title">Gestión Digital</div>
+        <div class="sub">Radicamos tu solicitud sin que salgas de casa</div>
+      </div>
+      <div class="credit-indicator">
+        <div class="ico">⚡</div>
+        <div class="num">Minutos</div>
+        <div class="title">Respuesta Récord</div>
+        <div class="sub">Resultados de viabilidad con bancos en minutos</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1185,13 +1186,26 @@ function showSection(sec){
     document.querySelectorAll('.nav-links a')[0].classList.add('active');
     heroTitle.innerHTML='Descubre si <strong>PUEDES</strong> tener apartamento propio';
     heroSub.textContent='En 2 minutos sabes cuánto cuesta, cuánto ahorras y cuándo es tuyo. Gratis, sin enredos.';
+    document.getElementById('trust-num1').textContent='+500';document.getElementById('trust-num1').dataset.target='500';
+    document.getElementById('trust-lbl1').textContent='Personas han encontrado su hogar';
+    document.getElementById('trust-num2').textContent='+25';document.getElementById('trust-num2').dataset.target='25';
+    document.getElementById('trust-lbl2').textContent='proyectos disponibles';
+    document.getElementById('trust-num3').textContent='-15%';
+    document.getElementById('trust-lbl3').textContent='en tu cuota mensual*';
   }else{
     document.querySelectorAll('.tab-btn')[1].classList.add('active');
     document.querySelectorAll('.nav-links a')[1].classList.add('active');
     heroTitle.innerHTML='Encuentra el crédito que <strong>SÍ</strong> se ajusta a ti';
     heroSub.textContent='Comparamos múltiples bancos por ti. Tú eliges. Sin papeleo al principio.';
+    document.getElementById('trust-num1').textContent='+1000';document.getElementById('trust-num1').dataset.target='1000';
+    document.getElementById('trust-lbl1').textContent='consiguieron su crédito';
+    document.getElementById('trust-num2').textContent='0%';document.getElementById('trust-num2').dataset.target='0';
+    document.getElementById('trust-lbl2').textContent='comisión para ti';
+    document.getElementById('trust-num3').textContent='100%';
+    document.getElementById('trust-lbl3').textContent='gratis y sin compromiso';
     document.querySelectorAll('#sec-credito .step').forEach(s=>s.classList.remove('active'));
     document.getElementById('credit-step1').classList.add('active');
+    animateCounters();
   }
   window.scrollTo({top:0,behavior:'smooth'});
 }
