@@ -563,6 +563,40 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
   .habeas-banner{right:20px;bottom:90px}
 }
 
+/* ====== WIZARD ====== */
+.wiz-wrap{max-width:520px;margin:56px auto 20px;text-align:center;padding:0 8px}
+.wiz-step{display:none}.wiz-step.active{display:block}
+.wiz-progress{display:flex;justify-content:center;gap:8px;margin-bottom:44px}
+.wiz-dot{width:9px;height:9px;border-radius:50%;background:var(--border);transition:.3s}
+.wiz-dot.active{background:var(--primary);transform:scale(1.2)}
+.wiz-dot.done{background:var(--success)}
+.wiz-title{font-size:1.9rem;font-weight:900;color:var(--navy);margin-bottom:10px;letter-spacing:-.03em;line-height:1.15}
+.wiz-sub{font-size:1rem;color:var(--gray);margin-bottom:30px}
+.wiz-currency{display:flex;align-items:center;background:#fff;border:2px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:.2s;margin-bottom:10px}
+.wiz-currency:focus-within{border-color:var(--primary);box-shadow:0 0 0 4px rgba(37,99,235,.1)}
+.wiz-currency-sym{padding:0 18px;font-size:1.1rem;font-weight:700;color:var(--gray);border-right:1px solid var(--border);background:var(--light);height:100%;display:flex;align-items:center}
+.wiz-currency input{flex:1;padding:20px 16px;font-size:1.45rem;font-weight:700;border:none;outline:none;background:transparent;font-family:inherit;color:var(--navy);min-width:0}
+.wiz-currency input::placeholder{color:#CBD5E1;font-weight:500}
+.wiz-hint{font-size:.83rem;color:var(--gray-soft);margin-bottom:26px;text-align:left;padding-left:2px}
+.wiz-btn{width:100%;padding:17px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:1.05rem;font-weight:700;cursor:pointer;transition:.2s;font-family:inherit;letter-spacing:-.01em}
+.wiz-btn:hover{background:var(--primary-600);transform:translateY(-1px)}
+.wiz-btn:active{transform:translateY(0)}
+.wiz-skip{display:block;margin-top:14px;font-size:.87rem;color:var(--gray);cursor:pointer;background:none;border:none;font-family:inherit;text-decoration:underline;text-underline-offset:3px;padding:4px}
+.wiz-skip:hover{color:var(--primary)}
+.wiz-error{color:#DC2626;font-size:.83rem;margin-bottom:14px;text-align:left;display:none}
+/* wizard summary bar */
+.wiz-summary-bar{display:flex;align-items:center;justify-content:space-between;background:var(--primary-soft);border:1px solid rgba(37,99,235,.15);border-radius:10px;padding:10px 16px;margin-bottom:20px;flex-wrap:wrap;gap:8px}
+.wiz-summary-bar span{font-size:.85rem;color:var(--primary);font-weight:600}
+.wiz-summary-bar button{background:none;border:1px solid var(--primary);color:var(--primary);border-radius:6px;padding:4px 12px;font-size:.8rem;font-weight:700;cursor:pointer;font-family:inherit}
+.wiz-summary-bar button:hover{background:var(--primary);color:#fff}
+/* fit/out badges on project cards */
+.fit-label{display:inline-flex;align-items:center;gap:4px;background:var(--success-soft);color:#065F46;font-size:.7rem;font-weight:800;padding:4px 10px;border-radius:20px;letter-spacing:.3px;margin-bottom:8px}
+.out-label{display:inline-flex;align-items:center;gap:4px;background:#FEF3C7;color:#92400E;font-size:.7rem;font-weight:800;padding:4px 10px;border-radius:20px;letter-spacing:.3px;margin-bottom:8px}
+.stretch-label{display:inline-flex;align-items:center;gap:4px;background:#FFF7ED;color:#C2410C;font-size:.7rem;font-weight:800;padding:4px 10px;border-radius:20px;letter-spacing:.3px;margin-bottom:8px}
+.out-sep{grid-column:1/-1;padding:18px 0 6px;font-size:.8rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.6px;display:flex;align-items:center;gap:10px}
+.out-sep::after{content:'';flex:1;height:1px;background:var(--border)}
+@media(max-width:600px){.wiz-wrap{margin:36px auto 16px}.wiz-title{font-size:1.55rem}}
+
 </style>
 </head>
 <body>
@@ -1262,6 +1296,7 @@ let currentProject=null, selectedCreditType='';
 let activeFilters={sector:'todos',precio:'0',tipo:'todos'};
 let planCalculado=null;
 let compareList=[];
+let wizardData={ingresos:0,ahorro:0,done:false};
 
 const sectorLabels={todos:'Medellín',norte:'Medellín Norte',sur:'Medellín Sur',bello:'Bello',envigado:'Envigado',sabaneta:'Sabaneta',rionegro:'Rionegro'};
 
@@ -1382,6 +1417,72 @@ function showSection(sec){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+// ======================== WIZARD ========================
+function wizNext(){
+  const ing=parseMoney(document.getElementById('wiz-ingresos').value);
+  const err=document.getElementById('wiz-err1');
+  if(!ing){err.style.display='block';return;}
+  err.style.display='none';
+  wizardData.ingresos=ing;
+  document.getElementById('wiz-step1').classList.remove('active');
+  document.getElementById('wiz-step2').classList.add('active');
+  document.getElementById('wdot1').className='wiz-dot done';
+  document.getElementById('wdot2').className='wiz-dot active';
+  setTimeout(()=>document.getElementById('wiz-ahorro').focus(),100);
+}
+function wizBack(){
+  document.getElementById('wiz-step2').classList.remove('active');
+  document.getElementById('wiz-step1').classList.add('active');
+  document.getElementById('wdot1').className='wiz-dot active';
+  document.getElementById('wdot2').className='wiz-dot';
+}
+function wizDone(){
+  wizardData.ahorro=parseMoney(document.getElementById('wiz-ahorro').value);
+  wizardData.done=true;
+  showProjectsWrap();
+}
+function wizSkip(){
+  wizardData.done=false;
+  showProjectsWrap();
+}
+function showProjectsWrap(){
+  document.getElementById('wizardWrap').style.display='none';
+  document.getElementById('projectsWrap').style.display='block';
+  if(wizardData.done&&wizardData.ingresos){
+    const bar=document.getElementById('wizSummaryBar');
+    const txt=document.getElementById('wizSummaryText');
+    bar.style.display='flex';
+    txt.textContent='Calculado para $'+fmt(wizardData.ingresos)+'/mes'+(wizardData.ahorro?' · $'+fmt(wizardData.ahorro)+' ahorrados':'');
+  }
+  renderProjects();
+}
+function resetWizard(){
+  wizardData={ingresos:0,ahorro:0,done:false};
+  document.getElementById('wiz-ingresos').value='';
+  document.getElementById('wiz-ahorro').value='';
+  document.getElementById('wiz-step1').classList.add('active');
+  document.getElementById('wiz-step2').classList.remove('active');
+  document.getElementById('wdot1').className='wiz-dot active';
+  document.getElementById('wdot2').className='wiz-dot';
+  document.getElementById('wizSummaryBar').style.display='none';
+  document.getElementById('wizardWrap').style.display='block';
+  document.getElementById('projectsWrap').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function getAffordability(p){
+  if(!wizardData.done||!wizardData.ingresos)return null;
+  const rate=0.0105,n=240;
+  const factor=rate*Math.pow(1+rate,n)/(Math.pow(1+rate,n)-1);
+  const maxCuota=wizardData.ingresos*0.30;
+  const maxLoan=maxCuota/factor;
+  const maxByIncome=maxLoan/0.70;
+  const maxByAhorro=wizardData.ahorro>0?wizardData.ahorro/0.30:Infinity;
+  const maxPrice=Math.min(maxByIncome,maxByAhorro);
+  if(p.price<=maxPrice)return 'fit';
+  if(p.price<=maxPrice*1.35)return 'stretch';
+  return 'out';
+}
+
 // ======================== PROJECTS ========================
 function catLabel(c){return c==='vis'?'VIS':c==='vip'?'VIP':'No VIS'}
 function priceInRange(price,range){
@@ -1434,9 +1535,23 @@ function renderProjects(){
   if(activeFilters.tipo!=='todos')filtered=filtered.filter(p=>p.categoria===activeFilters.tipo);
   filtered=filtered.filter(p=>priceInRange(p.price,activeFilters.precio));
   if(!filtered.length){grid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--gray);padding:30px">No encontramos proyectos con esos filtros. Prueba ajustar.</p>';return}
-  // ordenar por match score descendente
-  filtered=[...filtered].sort((a,b)=>computeMatchScore(b)-computeMatchScore(a));
+  // ordenar: wizard fit primero, luego stretch, luego out; dentro de cada grupo por match score
+  const afOrder={'fit':0,'stretch':1,'out':2,null:1};
+  filtered=[...filtered].sort((a,b)=>{
+    const af=getAffordability(a),bf=getAffordability(b);
+    if(afOrder[af]!==afOrder[bf])return afOrder[af]-afOrder[bf];
+    return computeMatchScore(b)-computeMatchScore(a);
+  });
+  const hasWizard=wizardData.done&&wizardData.ingresos>0;
+  let outSepInserted=false;
   grid.innerHTML=filtered.map(p=>{
+    const af=hasWizard?getAffordability(p):null;
+    let afLabel='';
+    if(af==='fit')afLabel='<div class="fit-label">✓ Se ajusta a ti</div>';
+    else if(af==='stretch')afLabel='<div class="stretch-label">⚡ Con esfuerzo</div>';
+    else if(af==='out')afLabel='<div class="out-label">↑ Fuera de tu rango</div>';
+    let sep='';
+    if(hasWizard&&af==='out'&&!outSepInserted){outSepInserted=true;sep='<div class="out-sep">Otros proyectos disponibles</div>';}
     const esVis=p.categoria==='vis'||p.categoria==='vip';
     const priceBlock=esVis
       ? `<div class="project-price">$${fmt(p.price)} <small>COP</small></div><span class="project-price-note">&nbsp;</span>`
@@ -1446,7 +1561,7 @@ function renderProjects(){
     const badges=computeBadges(p);
     const badgesHtml=badges.length?`<div class="ctx-badges">${badges.map(b=>`<span class="ctx-badge ${b.cls}">${b.ico}${b.label}</span>`).join('')}</div>`:'';
     const isCompareActive=compareList.indexOf(p.id)>=0;
-    return `
+    return `${sep}
     <div class="project-card">
       <div class="project-img" style="background-image:url('${p.img}')">
         <span class="project-badge ${p.badge==='Últimas unidades'?'ultimas':''}">${p.badge}</span>
@@ -1456,6 +1571,7 @@ function renderProjects(){
         </button>
       </div>
       <div class="project-info">
+        ${afLabel}
         <div class="project-name">${p.name} <span class="cat-tag ${p.categoria}">${catLabel(p.categoria)}</span></div>
         <div class="project-location">${p.location} · <span class="project-constructor" onclick="openBuilder('${p.constructorId}')">${p.constructor}</span></div>
         <div class="match-bar" title="Match basado en tus filtros y precio/m²">
@@ -1800,7 +1916,13 @@ function calcularCotizacion(){
   const aportesTotales=aportesExtras+cuotaComoda*meses;
   const llegaAMeta=aportesTotales>=metaInicial;
   const brecha=Math.max(0,metaInicial-aportesTotales);
-  const cuotaNecesaria=(metaInicial-aportesExtras)/meses;
+  const cuotaNecesaria=Math.max(0,(metaInicial-aportesExtras)/meses);
+  // CUOTA BASE AJUSTADA: la menor entre lo que el usuario dijo que podía pagar
+  // y lo que realmente necesita pagar para alcanzar la meta exacta.
+  const cuotaBaseAjustada=Math.min(cuotaComoda,cuotaNecesaria);
+  const cuotaReducida=cuotaComoda>cuotaBaseAjustada;
+  const ahorroPorReduccion=Math.max(0,cuotaComoda-cuotaBaseAjustada);
+  const ahorroTotalReduccion=ahorroPorReduccion*meses;
 
   planCalculado={
     proyecto:p.name, constructora:p.constructor, precio:p.price,
@@ -1811,7 +1933,9 @@ function calcularCotizacion(){
   };
 
   const viabilidadBlock = llegaAMeta
-    ? `<div class="gap-ok">✅ <strong>¡Felicidades!</strong> Cubres el ${((aportesTotales/metaInicial)*100).toFixed(0)}% de tu cuota inicial${ahorroMensual>0?` y, gracias a tus aportes extra, tu cuota base baja <strong>$${fmt(ahorroMensual)}/mes</strong> comparada al plan tradicional.`:'.'}</div>`
+    ? (cuotaReducida
+        ? `<div class="gap-ok">🎉 <strong>¡Excelente noticia!</strong> Tus primas + cesantías + separación cubren casi toda la meta. <strong>Tu cuota se reduce de $${fmt(cuotaComoda)} a solo $${fmt(cuotaBaseAjustada)}/mes</strong>. Te ahorras <strong>$${fmt(ahorroTotalReduccion)}</strong> en total durante ${meses} meses.</div>`
+        : `<div class="gap-ok">✅ <strong>¡Perfecto!</strong> Cubres el 100% de tu cuota inicial con tu cuota base de <strong>$${fmt(cuotaBaseAjustada)}/mes</strong>${ahorroMensual>0?` y, gracias a tus aportes extra, tu cuota base baja <strong>$${fmt(ahorroMensual)}/mes</strong> vs el plan tradicional.`:'.'}</div>`)
     : `<div class="gap-alert">💡 <strong>¡Casi lo logras!</strong> Estás a un paso de tu meta. Con este plan te faltan <strong>$${fmt(brecha)}</strong>. Para llegar a la meta, tu cuota mensual debería ser de <strong>$${fmt(cuotaNecesaria)}</strong>.<br>¿Quieres ajustar tu cuota mensual o sumar más ahorros para cerrar la brecha?</div>`;
 
   // Ancla social basada en datos reales del mercado colombiano
@@ -1825,7 +1949,7 @@ function calcularCotizacion(){
     <div><strong>${pctLbl} de compradores</strong> en Colombia eligen viviendas de ${rangeLbl}. ${extraLine}</div>
   </div>`;
 
-  // Filas del plan mes a mes
+  // Filas del plan mes a mes (usando la cuota base ajustada)
   const tableRows=schedule.map((m,i)=>{
     const isPrima=usarPrimas&&(m.month===6||m.month===12);
     const isCes=usarCesantias&&m.month===3;
@@ -1835,10 +1959,10 @@ function calcularCotizacion(){
     const mCes=isCes?ingresos:0;
     const mExtra=isExtra?extras:0;
     const mSep=isSep?separacion:0;
-    const total=cuotaComoda+mPrima+mCes+mExtra+mSep;
+    const total=cuotaBaseAjustada+mPrima+mCes+mExtra+mSep;
     return `<tr>
       <td class="mes">${m.label}</td>
-      <td>$${fmt(cuotaComoda)}</td>
+      <td>$${fmt(cuotaBaseAjustada)}</td>
       <td class="${mSep?'':'dash'}">${mSep?'$'+fmt(mSep):'—'}</td>
       <td class="${mPrima?'':'dash'}">${mPrima?'$'+fmt(mPrima):'—'}</td>
       <td class="${mCes?'':'dash'}">${mCes?'$'+fmt(mCes):'—'}</td>
@@ -1846,7 +1970,7 @@ function calcularCotizacion(){
       <td class="total">$${fmt(total)}</td>
     </tr>`;
   }).join('');
-  const totalPlan=cuotaComoda*meses+totalPrimas+totalCesantias+extras+separacion;
+  const totalPlan=cuotaBaseAjustada*meses+totalPrimas+totalCesantias+extras+separacion;
 
   const html=`
     <div class="compare-grid">
@@ -1858,9 +1982,11 @@ function calcularCotizacion(){
       </div>
       <div class="compare-card smart">
         <h4>Plan Inteligente</h4>
-        <span class="tag-mini">Con Primas + Cesantías + Extras</span>
-        <div class="big-q">$${fmt(cuotaInteligente)}<small>/mes durante ${meses} meses</small></div>
-        <div class="saving">Meta a cubrir: $${fmt(metaInicial)}</div>
+        <span class="tag-mini">${cuotaReducida?'Tu cuota ajustada':'Tu cuota base mensual'}</span>
+        <div class="big-q">$${fmt(cuotaBaseAjustada)}<small>/mes durante ${meses} meses</small></div>
+        ${cuotaReducida
+          ? `<div class="saving" style="color:var(--success);font-weight:700">Ahorras $${fmt(ahorroTotalReduccion)} en total</div>`
+          : `<div class="saving">Meta a cubrir: $${fmt(metaInicial)}</div>`}
       </div>
     </div>
 
@@ -1871,7 +1997,7 @@ function calcularCotizacion(){
     <div class="wow-plan">
       <div class="plan-compact">
         ${separacion>0?`<div class="plan-chip"><small>Separación</small><strong>$${fmt(separacion)}</strong></div>`:''}
-        <div class="plan-chip"><small>Cuota mensual</small><strong>$${fmt(cuotaComoda)}</strong></div>
+        <div class="plan-chip"><small>Cuota mensual</small><strong>$${fmt(cuotaBaseAjustada)}</strong></div>
         ${usarPrimas?`<div class="plan-chip boost"><small>Primas (${mesesPrimas.length})</small><strong>$${fmt(totalPrimas)}</strong><span class="sub">${mesesPrimas.map(m=>m.label).join(' · ')}</span></div>`:''}
         ${usarCesantias?`<div class="plan-chip boost"><small>Cesantías (${mesesCesantias.length})</small><strong>$${fmt(totalCesantias)}</strong><span class="sub">${mesesCesantias.map(m=>m.label).join(' · ')}</span></div>`:''}
         ${extras>0?`<div class="plan-chip"><small>Abono extra</small><strong>$${fmt(extras)}</strong>${extrasFecha?`<span class="sub">${fmtMonthYear(extrasFecha)}</span>`:''}</div>`:''}
@@ -1886,7 +2012,7 @@ function calcularCotizacion(){
             </thead>
             <tbody>${tableRows}</tbody>
             <tfoot>
-              <tr><td>Total</td><td>$${fmt(cuotaComoda*meses)}</td><td>$${fmt(separacion)}</td><td>$${fmt(totalPrimas)}</td><td>$${fmt(totalCesantias)}</td><td>$${fmt(extras)}</td><td>$${fmt(totalPlan)}</td></tr>
+              <tr><td>Total</td><td>$${fmt(cuotaBaseAjustada*meses)}</td><td>$${fmt(separacion)}</td><td>$${fmt(totalPrimas)}</td><td>$${fmt(totalCesantias)}</td><td>$${fmt(extras)}</td><td>$${fmt(totalPlan)}</td></tr>
             </tfoot>
           </table>
         </div>
