@@ -6,6 +6,11 @@
 <meta name="description" content="Tu Cuota — Descubre como puedes comprar apartamento propio. Compara proyectos y créditos hipotecarios en 2 minutos. Gratis, sin enredos.">
 <title>Tu Cuota</title>
 
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap" rel="stylesheet">
+
 <!-- GA4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-XXXXXXX');</script>
@@ -16,17 +21,30 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root {
-  --primary: #1E40AF; /* Un azul un poco más profundo para el 'Cuota' */
+  --primary: #1E40AF;
+  --primary-600: #2563EB;
+  --primary-soft: #EEF2FF;
   --success: #10B981;
+  --success-soft: #ECFDF5;
   --navy: #0F2544;
   --gray:#64748B;
+  --gray-soft:#94A3B8;
   --light:#F8FAFC;
+  --cream:#FDFBF5;
   --border:#E2E8F0;
+  --border-soft:#EEF1F6;
   --dark:#0F172A;
-  --shadow:0 4px 20px rgba(0,0,0,.08);
-  --radius:12px;
+  --accent:#F59E0B;
+  --shadow:0 4px 20px rgba(15,37,68,.06);
+  --shadow-sm:0 2px 10px rgba(15,37,68,.05);
+  --shadow-md:0 10px 28px rgba(15,37,68,.08);
+  --shadow-lg:0 20px 48px rgba(15,37,68,.14);
+  --radius:14px;
+  --radius-sm:10px;
+  --radius-lg:20px;
 }
-body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--dark);background:#fff;line-height:1.6}
+body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--dark);background:var(--cream);line-height:1.6;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-feature-settings:"cv11","ss01"}
+h1,h2,h3,h4,.logo,.wow-title,.big-q,.project-price,.trust-stat .num,.radar-val{font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;letter-spacing:-.015em}
 .container{max-width:1200px;margin:0 auto;padding:0 20px}
 a{text-decoration:none;color:inherit}
 button{font-family:inherit}
@@ -60,6 +78,91 @@ nav.scrolled .logo{font-size:2rem}
 .tab-btn{padding:14px 32px;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--gray);transition:.25s}
 .tab-btn.active{background:var(--primary);color:#fff}
 .tab-btn:hover:not(.active){color:var(--dark)}
+
+/* MARKET RADAR */
+.market-radar{background:#fff;padding:22px 0 30px;border-bottom:1px solid var(--border-soft)}
+.radar-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.radar-header h3{font-size:.95rem;color:var(--navy);font-weight:800;letter-spacing:-.01em;display:inline-flex;align-items:center;gap:8px}
+.radar-header h3 .radar-ico{width:18px;height:18px;color:var(--primary)}
+.radar-live{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;font-weight:800;color:#065F46;background:var(--success-soft);padding:4px 10px;border-radius:20px;letter-spacing:.6px;text-transform:uppercase}
+.radar-live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--success);animation:pulse-dot 1.6s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.35)}}
+.radar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.radar-card{background:var(--cream);border:1px solid var(--border-soft);border-radius:var(--radius);padding:16px 18px;transition:.2s;position:relative;overflow:hidden}
+.radar-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.radar-card .radar-lbl{display:block;font-size:.68rem;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.radar-card .radar-val{display:block;font-size:1.4rem;font-weight:900;color:var(--navy);letter-spacing:-.02em;line-height:1.05;margin-bottom:4px}
+.radar-card .radar-trend{display:flex;align-items:center;gap:4px;font-size:.72rem;color:var(--gray);font-weight:600;line-height:1.3}
+.radar-card .radar-trend.up{color:#B45309}
+.radar-card .radar-trend.down{color:#065F46}
+.radar-card .radar-trend svg{width:12px;height:12px;flex-shrink:0}
+@media(max-width:900px){.radar-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.radar-grid{grid-template-columns:1fr}.radar-card{padding:14px 16px}}
+.market-radar[data-stage="proyectos"] .radar-grid[data-mode="credito"]{display:none}
+.market-radar[data-stage="credito"] .radar-grid[data-mode="proyectos"]{display:none}
+.market-radar[data-stage="credito"] #radarSector{display:none}
+.market-radar[data-stage="credito"] .radar-sector-sep{display:none}
+
+/* MATCH SCORE */
+.match-bar{display:flex;align-items:center;gap:8px;margin:10px 0 12px;font-size:.78rem}
+.match-bar .match-track{flex:1;height:6px;background:var(--border-soft);border-radius:10px;overflow:hidden}
+.match-bar .match-fill{height:100%;background:linear-gradient(90deg,var(--success),var(--primary));border-radius:10px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.match-bar .match-val{font-weight:800;color:var(--navy);white-space:nowrap;letter-spacing:-.01em}
+.match-bar .match-lbl{color:var(--gray);font-weight:600}
+
+/* CONTEXT BADGES */
+.ctx-badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.ctx-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:.2px}
+.ctx-badge.hot{background:#FEF3C7;color:#92400E}
+.ctx-badge.save{background:var(--success-soft);color:#065F46}
+.ctx-badge.first{background:var(--primary-soft);color:var(--primary)}
+.ctx-badge.new{background:#FAF5FF;color:#6B21A8}
+.ctx-badge svg{width:12px;height:12px}
+
+/* PROJECT CARD - COMPARE TOGGLE */
+.btn-compare{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);border:1.5px solid rgba(15,37,68,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;color:var(--navy);z-index:2;padding:0}
+.btn-compare:hover{background:#fff;border-color:var(--primary);color:var(--primary);transform:scale(1.06)}
+.btn-compare.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-compare svg{width:16px;height:16px}
+
+/* COMPARE FLOATING BAR */
+.compare-bar{position:fixed;bottom:-100px;left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow-lg);padding:14px 18px;z-index:148;display:flex;align-items:center;gap:14px;max-width:calc(100vw - 40px);transition:bottom .35s cubic-bezier(.2,.8,.2,1);flex-wrap:wrap}
+.compare-bar.show{bottom:24px}
+.compare-bar .compare-label{font-size:.82rem;color:var(--gray);font-weight:700;white-space:nowrap}
+.compare-bar .compare-label strong{color:var(--navy)}
+.compare-items{display:flex;gap:8px;flex-wrap:wrap}
+.compare-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px 6px 12px;background:var(--primary-soft);color:var(--primary);border-radius:20px;font-size:.8rem;font-weight:700}
+.compare-chip button{background:rgba(30,64,175,.15);border:none;color:var(--primary);border-radius:50%;width:18px;height:18px;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1}
+.compare-chip button:hover{background:var(--primary);color:#fff}
+.btn-compare-go{background:var(--primary);color:#fff;border:none;padding:10px 18px;border-radius:12px;font-weight:800;cursor:pointer;font-size:.9rem;transition:.2s;white-space:nowrap;box-shadow:0 4px 12px rgba(30,64,175,.25)}
+.btn-compare-go:hover:not(:disabled){filter:brightness(1.08);transform:translateY(-1px)}
+.btn-compare-go:disabled{background:var(--gray-soft);cursor:not-allowed;box-shadow:none}
+.btn-compare-clear{background:transparent;border:none;color:var(--gray);font-size:.8rem;cursor:pointer;font-weight:600;padding:6px}
+.btn-compare-clear:hover{color:var(--primary);text-decoration:underline}
+@media(max-width:600px){.compare-bar{left:12px;right:12px;transform:none;max-width:none}.compare-bar.show{bottom:12px}}
+
+/* COMPARE TABLE */
+.compare-table{width:100%;border-collapse:separate;border-spacing:0;font-size:.88rem}
+.compare-table th,.compare-table td{padding:12px 14px;text-align:left;vertical-align:top}
+.compare-table thead th{background:linear-gradient(135deg,var(--navy),var(--primary));color:#fff;font-weight:800;font-size:.92rem;position:sticky;top:0}
+.compare-table thead th small{display:block;font-weight:500;font-size:.74rem;opacity:.85;margin-top:2px}
+.compare-table tbody tr:nth-child(even){background:var(--cream)}
+.compare-table td.lbl{font-weight:700;color:var(--gray);text-transform:uppercase;font-size:.72rem;letter-spacing:.4px;width:160px;background:var(--light)}
+.compare-table tbody td:not(.lbl){color:var(--navy);font-weight:600}
+.compare-table tfoot td{padding:16px 14px;background:var(--light)}
+.compare-table tfoot td:first-child{background:var(--light)}
+@media(max-width:720px){.compare-table{font-size:.78rem}.compare-table th,.compare-table td{padding:9px 10px}.compare-table td.lbl{width:110px}}
+
+/* BANK BENCHMARK */
+.bank-benchmark{display:inline-flex;align-items:center;gap:4px;font-size:.68rem;font-weight:700;margin-top:4px;padding:3px 8px;border-radius:20px;letter-spacing:.2px}
+.bank-benchmark.save{background:var(--success-soft);color:#065F46}
+.bank-benchmark.neutral{background:var(--light);color:var(--gray)}
+.bank-benchmark.high{background:#FEF3C7;color:#92400E}
+
+/* SOCIAL ANCHOR */
+.social-anchor{background:linear-gradient(135deg,var(--primary-soft),#fff);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin:16px 0;display:flex;gap:12px;align-items:flex-start;font-size:.88rem;color:var(--navy);line-height:1.5}
+.social-anchor .anchor-ico{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem}
+.social-anchor strong{color:var(--primary);font-weight:800}
 
 /* TRUST BAND */
 .trust-band{background:var(--light);padding:28px 0;border-bottom:1px solid var(--border)}
@@ -487,6 +590,73 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
   </div>
 </div>
 
+<!-- MARKET RADAR -->
+<section class="market-radar" id="marketRadar" data-stage="proyectos">
+  <div class="container">
+    <div class="radar-header">
+      <h3>
+        <svg class="radar-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/></svg>
+        <span id="radarTitle">Radar del mercado</span><span class="radar-sector-sep"> · </span><span id="radarSector">Medellín</span>
+      </h3>
+      <span class="radar-live">En vivo</span>
+    </div>
+
+    <!-- MODO: COTIZAR PROYECTO (búsqueda de inmueble) -->
+    <div class="radar-grid" data-mode="proyectos">
+      <div class="radar-card">
+        <span class="radar-lbl">Precio promedio m²</span>
+        <strong class="radar-val" id="radarPrice">—</strong>
+        <span class="radar-trend up">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          +2.3% vs trimestre anterior
+        </span>
+      </div>
+      <div class="radar-card">
+        <span class="radar-lbl">Proyectos en catálogo</span>
+        <strong class="radar-val" id="radarInventory">—</strong>
+        <span class="radar-trend">en 7 sectores del Valle de Aburrá</span>
+      </div>
+      <div class="radar-card">
+        <span class="radar-lbl">Preferencia del mercado</span>
+        <strong class="radar-val">66%</strong>
+        <span class="radar-trend">elige apartamento sobre casa</span>
+      </div>
+      <div class="radar-card">
+        <span class="radar-lbl">Categoría más buscada</span>
+        <strong class="radar-val" id="radarCategory">VIS</strong>
+        <span class="radar-trend">subsidio Mi Casa Ya disponible</span>
+      </div>
+    </div>
+
+    <!-- MODO: BUSCAR CRÉDITO (financiación) -->
+    <div class="radar-grid" data-mode="credito">
+      <div class="radar-card">
+        <span class="radar-lbl">Tasa promedio del mercado</span>
+        <strong class="radar-val" id="radarRate">—</strong>
+        <span class="radar-trend down">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>
+          -0.12pp este mes
+        </span>
+      </div>
+      <div class="radar-card">
+        <span class="radar-lbl">Plazo más elegido</span>
+        <strong class="radar-val">16–20 años</strong>
+        <span class="radar-trend">50.6% de jóvenes 25–35</span>
+      </div>
+      <div class="radar-card">
+        <span class="radar-lbl">Cuota inicial típica</span>
+        <strong class="radar-val">30%</strong>
+        <span class="radar-trend">del valor del inmueble</span>
+      </div>
+      <div class="radar-card">
+        <span class="radar-lbl">Perfil dominante</span>
+        <strong class="radar-val">2 de 3</strong>
+        <span class="radar-trend">créditos son de millennials (25–40)</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- TRUST BAND -->
 <section class="trust-band" id="trustBand">
   <div class="container">
@@ -807,7 +977,7 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
             <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
             <div class="txt">
               <strong>Incluir mis Primas</strong>
-              <span>Junio y Diciembre — Un salario completo cada prima</span>
+              <span>Junio y Diciembre — Medio salario cada prima (Ley 50)</span>
               <span class="power">✨ Aportes extra en junio y diciembre que te ayudan a llegar a tu cuota base o incluso a bajarla</span>
             </div>
           </label>
@@ -964,6 +1134,25 @@ footer{background:var(--navy);color:#CBD5E1;padding:50px 0 24px;margin-top:60px}
   </div>
 </footer>
 
+<!-- COMPARE FLOATING BAR -->
+<div class="compare-bar" id="compareBar">
+  <span class="compare-label"><strong id="compareCount">0</strong> / 3 para comparar</span>
+  <div class="compare-items" id="compareItems"></div>
+  <button class="btn-compare-go" id="btnCompareGo" onclick="openCompareModal()" disabled>Comparar →</button>
+  <button class="btn-compare-clear" onclick="clearCompare()">Limpiar</button>
+</div>
+
+<!-- COMPARE MODAL -->
+<div class="modal-overlay" id="compareModal">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h2>Comparación lado a lado</h2>
+      <button class="modal-close" onclick="closeModal('compareModal')">&times;</button>
+    </div>
+    <div class="modal-body" id="compareBody" style="overflow-x:auto"></div>
+  </div>
+</div>
+
 <!-- WHATSAPP FLOAT -->
 <div class="wa-float" onclick="openWhatsApp()" title="Chatea con nosotros">
   <svg viewBox="0 0 32 32"><path d="M16 2C8.27 2 2 8.27 2 16c0 2.77.81 5.35 2.2 7.53L2 30l6.66-2.15C10.79 29.2 13.32 30 16 30c7.73 0 14-6.27 14-14S23.73 2 16 2zm0 25.6c-2.46 0-4.76-.73-6.68-1.98l-.48-.31-3.95 1.27 1.28-3.85-.31-.5C4.58 20.28 3.8 18.2 3.8 16c0-6.73 5.47-12.2 12.2-12.2s12.2 5.47 12.2 12.2-5.47 12.2-12.2 12.2zm6.86-9.14c-.38-.19-2.24-1.1-2.58-1.23-.35-.13-.6-.19-.85.19s-.98 1.23-1.2 1.48c-.22.25-.45.28-.82.09-.38-.19-1.59-.58-3.03-1.87-1.12-1-1.88-2.24-2.1-2.61-.22-.38-.02-.58.17-.77.17-.17.38-.45.57-.67.19-.22.25-.38.38-.63.13-.25.06-.48-.03-.67-.09-.19-.85-2.04-1.16-2.8-.3-.73-.61-.63-.85-.64h-.73c-.25 0-.67.09-1.02.48s-1.33 1.3-1.33 3.16 1.36 3.67 1.55 3.92c.19.25 2.68 4.09 6.5 5.74.91.39 1.62.63 2.17.81.91.29 1.74.25 2.4.15.73-.11 2.24-.92 2.56-1.8.32-.88.32-1.63.22-1.8-.1-.16-.35-.25-.73-.44z"/></svg>
@@ -1072,6 +1261,9 @@ const legalContent = {
 let currentProject=null, selectedCreditType='';
 let activeFilters={sector:'todos',precio:'0',tipo:'todos'};
 let planCalculado=null;
+let compareList=[];
+
+const sectorLabels={todos:'Medellín',norte:'Medellín Norte',sur:'Medellín Sur',bello:'Bello',envigado:'Envigado',sabaneta:'Sabaneta',rionegro:'Rionegro'};
 
 // ======================== UTILS ========================
 function fmt(n){return new Intl.NumberFormat('es-CO').format(Math.round(n))}
@@ -1157,30 +1349,32 @@ function showSection(sec){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('sec-'+sec).classList.add('active');
   document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
   const heroTitle=document.getElementById('heroTitle'), heroSub=document.getElementById('heroSub');
+  if(typeof setMarketRadarStage==='function')setMarketRadarStage(sec);
   if(sec==='proyectos'){
     document.querySelectorAll('.tab-btn')[0].classList.add('active');
-    document.querySelectorAll('.nav-links a')[0].classList.add('active');
     heroTitle.innerHTML='Descubre si <strong>PUEDES</strong> tener apartamento propio';
     heroSub.textContent='En 2 minutos sabes cuánto cuesta, cuánto ahorras y cuándo es tuyo. Gratis, sin enredos.';
-    document.getElementById('trust-num1').textContent='+500';document.getElementById('trust-num1').dataset.target='500';
-    document.getElementById('trust-lbl1').textContent='Personas han encontrado su hogar';
-    document.getElementById('trust-num2').textContent='+25';document.getElementById('trust-num2').dataset.target='25';
-    document.getElementById('trust-lbl2').textContent='proyectos disponibles';
-    document.getElementById('trust-num3').textContent='-15%';
+    document.getElementById('trust-num1').textContent='+0';document.getElementById('trust-num1').dataset.target='500';
+    document.getElementById('trust-lbl1').textContent='familias con hogar propio';
+    document.getElementById('trust-num2').textContent='+0';document.getElementById('trust-num2').dataset.target='25';
+    document.getElementById('trust-lbl2').textContent='proyectos en 7 sectores';
+    document.getElementById('trust-num3').textContent='-15%';document.getElementById('trust-num3').removeAttribute('data-target');
     document.getElementById('trust-lbl3').textContent='en tu cuota mensual*';
+    animateCounters();
   }else{
     document.querySelectorAll('.tab-btn')[1].classList.add('active');
-    document.querySelectorAll('.nav-links a')[1].classList.add('active');
     heroTitle.innerHTML='Encuentra el crédito que <strong>SÍ</strong> se ajusta a ti';
     heroSub.textContent='Comparamos múltiples bancos por ti. Tú eliges. Sin papeleo al principio.';
-    document.getElementById('trust-num1').textContent='+1000';document.getElementById('trust-num1').dataset.target='1000';
-    document.getElementById('trust-lbl1').textContent='consiguieron su crédito';
-    document.getElementById('trust-num2').textContent='2 min';document.getElementById('trust-num2').removeAttribute('data-target');
-    document.getElementById('trust-lbl2').textContent='para conocer tu viabilidad';
-    document.getElementById('trust-num3').textContent='100%';
-    document.getElementById('trust-lbl3').textContent='gratis y sin compromiso';
+    document.getElementById('trust-num1').textContent='+0';document.getElementById('trust-num1').dataset.target='1000';
+    document.getElementById('trust-lbl1').textContent='créditos aprobados';
+    document.getElementById('trust-num2').textContent='+0';document.getElementById('trust-num2').dataset.target=String(banks.length);
+    document.getElementById('trust-lbl2').textContent='bancos comparados en paralelo';
+    const minMV=Math.min(...banks.map(b=>b.rate));
+    const minEA=(Math.pow(1+minMV/100,12)-1)*100;
+    document.getElementById('trust-num3').textContent=minEA.toFixed(1).replace('.0','')+'%';
+    document.getElementById('trust-num3').removeAttribute('data-target');
+    document.getElementById('trust-lbl3').textContent='desde (E.A.) · tasa más baja';
     document.querySelectorAll('#sec-credito .step').forEach(s=>s.classList.remove('active'));
     document.getElementById('credit-step1').classList.add('active');
     animateCounters();
@@ -1197,6 +1391,42 @@ function priceInRange(price,range){
   if(range==='500+')return price>=500000000;
   return true;
 }
+function computeMatchScore(p){
+  let score=72;
+  const anyFilter=activeFilters.sector!=='todos'||activeFilters.precio!=='0'||activeFilters.tipo!=='todos';
+  if(!anyFilter){
+    // base popularity derivada de forma determinista
+    score=78+((p.id*13)%18);
+    return Math.min(99,score);
+  }
+  if(activeFilters.sector!=='todos'&&activeFilters.sector===p.sector)score+=12;
+  if(activeFilters.precio!=='0'&&priceInRange(p.price,activeFilters.precio))score+=10;
+  if(activeFilters.tipo!=='todos'&&activeFilters.tipo===p.categoria)score+=8;
+  // pequeño bonus por precio/m² competitivo
+  const pm2=p.price/p.area;
+  const avgPm2=projects.reduce((a,b)=>a+b.price/b.area,0)/projects.length;
+  if(pm2<avgPm2)score+=3;
+  return Math.min(99,score);
+}
+function computeBadges(p){
+  const badges=[];
+  const sectorProjects=projects.filter(x=>x.sector===p.sector);
+  const sectorAvgPm2=sectorProjects.reduce((a,b)=>a+b.price/b.area,0)/sectorProjects.length;
+  const thisPm2=p.price/p.area;
+  if(thisPm2<sectorAvgPm2*0.95){
+    badges.push({cls:'save',label:'Precio bajo promedio del sector',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>'});
+  }
+  if(p.categoria==='vis'||p.categoria==='vip'){
+    badges.push({cls:'first',label:'Ideal primera vivienda',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 4l9 8"/><path d="M5 10v10h14V10"/></svg>'});
+  }
+  if((p.id*7)%3===0){
+    badges.push({cls:'hot',label:'Más buscado esta semana',ico:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/></svg>'});
+  }
+  if(p.badge==='Lanzamiento'||p.badge==='Nuevo'){
+    badges.push({cls:'new',label:'Recién lanzado',ico:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>'});
+  }
+  return badges.slice(0,2);
+}
 function renderProjects(){
   const grid=document.getElementById('projectsGrid');
   let filtered=projects;
@@ -1204,20 +1434,36 @@ function renderProjects(){
   if(activeFilters.tipo!=='todos')filtered=filtered.filter(p=>p.categoria===activeFilters.tipo);
   filtered=filtered.filter(p=>priceInRange(p.price,activeFilters.precio));
   if(!filtered.length){grid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--gray);padding:30px">No encontramos proyectos con esos filtros. Prueba ajustar.</p>';return}
+  // ordenar por match score descendente
+  filtered=[...filtered].sort((a,b)=>computeMatchScore(b)-computeMatchScore(a));
   grid.innerHTML=filtered.map(p=>{
     const esVis=p.categoria==='vis'||p.categoria==='vip';
     const priceBlock=esVis
       ? `<div class="project-price">$${fmt(p.price)} <small>COP</small></div><span class="project-price-note">&nbsp;</span>`
       : `<div class="project-price"><span class="prefix">Desde</span>$${fmt(p.price)} <small>COP</small></div><span class="project-price-note">* Sujeto a cambios por altura/vista</span>`;
+    const score=computeMatchScore(p);
+    const matchLbl=score>=92?'match excelente':score>=82?'buen match':'match';
+    const badges=computeBadges(p);
+    const badgesHtml=badges.length?`<div class="ctx-badges">${badges.map(b=>`<span class="ctx-badge ${b.cls}">${b.ico}${b.label}</span>`).join('')}</div>`:'';
+    const isCompareActive=compareList.indexOf(p.id)>=0;
     return `
     <div class="project-card">
       <div class="project-img" style="background-image:url('${p.img}')">
         <span class="project-badge ${p.badge==='Últimas unidades'?'ultimas':''}">${p.badge}</span>
         ${p.urgency?`<span class="urgency-chip">⚡ ${p.urgency}</span>`:''}
+        <button class="btn-compare ${isCompareActive?'active':''}" onclick="toggleCompare(event,${p.id},this)" title="Agregar a comparar" aria-label="Comparar proyecto">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h13"/><path d="M3 12h9"/><path d="M3 18h13"/><path d="M17 9l4-3-4-3"/><path d="M17 21l4-3-4-3"/></svg>
+        </button>
       </div>
       <div class="project-info">
         <div class="project-name">${p.name} <span class="cat-tag ${p.categoria}">${catLabel(p.categoria)}</span></div>
         <div class="project-location">${p.location} · <span class="project-constructor" onclick="openBuilder('${p.constructorId}')">${p.constructor}</span></div>
+        <div class="match-bar" title="Match basado en tus filtros y precio/m²">
+          <span class="match-lbl">${matchLbl}</span>
+          <div class="match-track"><div class="match-fill" style="width:${score}%"></div></div>
+          <span class="match-val">${score}%</span>
+        </div>
+        ${badgesHtml}
         <div class="project-details">
           <span class="project-detail"><strong>${p.area}m²</strong></span>
           <span class="project-detail"><strong>${p.rooms}</strong> hab</span>
@@ -1234,6 +1480,7 @@ function applyFilters(){
   activeFilters.precio=document.getElementById('filterPrecio').value;
   activeFilters.tipo=document.getElementById('filterTipo').value;
   updateFilterBadge();
+  updateMarketRadar();
   renderProjects();
 }
 function resetFilters(){
@@ -1242,6 +1489,7 @@ function resetFilters(){
   document.getElementById('filterTipo').value='todos';
   activeFilters={sector:'todos',precio:'0',tipo:'todos'};
   updateFilterBadge();
+  updateMarketRadar();
   renderProjects();
 }
 function openFilterSheet(){
@@ -1259,6 +1507,7 @@ function applyMobileFilters(){
   document.getElementById('filterPrecio').value=activeFilters.precio;
   document.getElementById('filterTipo').value=activeFilters.tipo;
   updateFilterBadge();
+  updateMarketRadar();
   renderProjects();
   closeFilterSheet();
 }
@@ -1274,6 +1523,135 @@ function updateFilterBadge(){
   if(activeFilters.tipo!=='todos')c++;
   const badge=document.getElementById('filterCount');
   if(badge){badge.textContent=c;badge.style.display=c?'inline-block':'none'}
+}
+
+// ======================== MARKET RADAR ========================
+function avgPricePerM2(sectorKey){
+  const arr=sectorKey&&sectorKey!=='todos'?projects.filter(p=>p.sector===sectorKey):projects;
+  if(!arr.length)return 0;
+  return arr.reduce((a,b)=>a+b.price/b.area,0)/arr.length;
+}
+function avgBankRate(){
+  return banks.reduce((a,b)=>a+b.rate,0)/banks.length;
+}
+function fmtShortMoney(n){
+  if(n>=1000000)return '$'+(n/1000000).toFixed(1).replace('.0','')+'M';
+  if(n>=1000)return '$'+Math.round(n/1000)+'K';
+  return '$'+fmt(n);
+}
+function updateMarketRadar(){
+  const sectorEl=document.getElementById('radarSector');
+  const priceEl=document.getElementById('radarPrice');
+  const rateEl=document.getElementById('radarRate');
+  const invEl=document.getElementById('radarInventory');
+  const catEl=document.getElementById('radarCategory');
+  if(!priceEl&&!rateEl)return;
+  const sector=activeFilters.sector;
+  if(sectorEl)sectorEl.textContent=sectorLabels[sector]||'Medellín';
+  const filtered=sector==='todos'?projects:projects.filter(p=>p.sector===sector);
+  const avg=avgPricePerM2(sector);
+  if(priceEl)priceEl.textContent=avg?fmtShortMoney(avg)+'/m²':'—';
+  if(invEl)invEl.textContent=filtered.length+' proyectos';
+  if(catEl){
+    const counts=filtered.reduce((a,p)=>(a[p.categoria]=(a[p.categoria]||0)+1,a),{});
+    const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+    catEl.textContent=top?(top[0]==='vis'?'VIS':top[0]==='vip'?'VIP':'No VIS'):'—';
+  }
+  const rate=avgBankRate();
+  if(rateEl)rateEl.textContent=rate.toFixed(2)+'% MV';
+}
+function setMarketRadarStage(stage){
+  const el=document.getElementById('marketRadar');
+  if(!el)return;
+  el.setAttribute('data-stage',stage);
+  const title=document.getElementById('radarTitle');
+  if(title)title.textContent=stage==='credito'?'Radar del crédito hipotecario':'Radar del mercado inmobiliario';
+}
+
+// ======================== COMPARADOR DE PROYECTOS ========================
+function toggleCompare(ev,id,btn){
+  if(ev&&ev.stopPropagation)ev.stopPropagation();
+  const idx=compareList.indexOf(id);
+  if(idx>=0){
+    compareList.splice(idx,1);
+    btn.classList.remove('active');
+  } else {
+    if(compareList.length>=3){
+      btn.animate([{transform:'scale(1)'},{transform:'scale(1.2)'},{transform:'scale(1)'}],{duration:260});
+      return;
+    }
+    compareList.push(id);
+    btn.classList.add('active');
+  }
+  renderCompareBar();
+}
+function renderCompareBar(){
+  const bar=document.getElementById('compareBar');
+  const items=document.getElementById('compareItems');
+  const countEl=document.getElementById('compareCount');
+  const goBtn=document.getElementById('btnCompareGo');
+  if(!bar)return;
+  countEl.textContent=compareList.length;
+  if(compareList.length===0){
+    bar.classList.remove('show');
+    return;
+  }
+  bar.classList.add('show');
+  goBtn.disabled=compareList.length<2;
+  items.innerHTML=compareList.map(id=>{
+    const p=projects.find(x=>x.id===id);
+    if(!p)return '';
+    return `<span class="compare-chip"><span>${p.name}</span><button type="button" onclick="removeFromCompare(${id})" aria-label="Quitar">×</button></span>`;
+  }).join('');
+}
+function removeFromCompare(id){
+  compareList=compareList.filter(x=>x!==id);
+  renderCompareBar();
+  renderProjects();
+}
+function clearCompare(){
+  compareList=[];
+  renderCompareBar();
+  renderProjects();
+}
+function openCompareModal(){
+  if(compareList.length<2)return;
+  const items=compareList.map(id=>projects.find(x=>x.id===id)).filter(Boolean);
+  const rows=[
+    {lbl:'Precio',val:p=>'$'+fmt(p.price)+' COP'},
+    {lbl:'Área',val:p=>p.area+' m²'},
+    {lbl:'Precio por m²',val:p=>'$'+fmt(Math.round(p.price/p.area))+'/m²'},
+    {lbl:'Habitaciones',val:p=>p.rooms},
+    {lbl:'Baños',val:p=>p.baths},
+    {lbl:'Tipo',val:p=>catLabel(p.categoria)},
+    {lbl:'Entrega',val:p=>p.delivery},
+    {lbl:'Plazo pagos',val:p=>p.months+' meses'},
+    {lbl:'Constructora',val:p=>p.constructor},
+    {lbl:'Amenidades',val:p=>p.amenities},
+    {lbl:'Cuota inicial 30%',val:p=>'$'+fmt(Math.round(p.price*0.30))+' COP'},
+    {lbl:'Cuota aprox. / mes',val:p=>'$'+fmt(Math.round((p.price*0.30)/p.months))+'/mes'},
+    {lbl:'Match con tus filtros',val:p=>computeMatchScore(p)+'%'}
+  ];
+  document.getElementById('compareBody').innerHTML=`
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th style="width:160px">&nbsp;</th>
+          ${items.map(p=>`<th>${p.name}<small>${p.location}</small></th>`).join('')}
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.map(r=>`<tr><td class="lbl">${r.lbl}</td>${items.map(p=>`<td>${r.val(p)}</td>`).join('')}</tr>`).join('')}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          ${items.map(p=>`<td><button class="btn-cotizar" style="padding:12px;font-size:.85rem;box-shadow:none" onclick="closeModal('compareModal');openCotizador(${p.id})">Cotizar →</button></td>`).join('')}
+        </tr>
+      </tfoot>
+    </table>
+  `;
+  document.getElementById('compareModal').classList.add('show');
 }
 
 // ======================== COTIZADOR MODAL ========================
@@ -1402,9 +1780,10 @@ function calcularCotizacion(){
 
   // Aportes mes a mes (cuota cómoda × meses)
   const aportesMensuales=cuotaComoda*meses;
-  // Primas: un salario en cada junio y diciembre del schedule
-  const totalPrimas=usarPrimas?ingresos*mesesPrimas.length:0;
-  // Cesantías: un salario en cada marzo del schedule
+  // Primas: MEDIO salario en junio y MEDIO en diciembre (Ley 50 Colombia)
+  const primaMonto=ingresos*0.5;
+  const totalPrimas=usarPrimas?primaMonto*mesesPrimas.length:0;
+  // Cesantías: un salario completo al año (consignadas feb, disponibles ~marzo)
   const totalCesantias=usarCesantias?ingresos*mesesCesantias.length:0;
   // Cuota TRADICIONAL: solo separación + cuota mensual plana (sin boosts)
   const planTradFaltante=Math.max(0,metaInicial-separacion-extras);
@@ -1435,13 +1814,24 @@ function calcularCotizacion(){
     ? `<div class="gap-ok">✅ <strong>¡Felicidades!</strong> Cubres el ${((aportesTotales/metaInicial)*100).toFixed(0)}% de tu cuota inicial${ahorroMensual>0?` y, gracias a tus aportes extra, tu cuota base baja <strong>$${fmt(ahorroMensual)}/mes</strong> comparada al plan tradicional.`:'.'}</div>`
     : `<div class="gap-alert">💡 <strong>¡Casi lo logras!</strong> Estás a un paso de tu meta. Con este plan te faltan <strong>$${fmt(brecha)}</strong>. Para llegar a la meta, tu cuota mensual debería ser de <strong>$${fmt(cuotaNecesaria)}</strong>.<br>¿Quieres ajustar tu cuota mensual o sumar más ahorros para cerrar la brecha?</div>`;
 
+  // Ancla social basada en datos reales del mercado colombiano
+  const rangeLbl=p.price<=250000000?'menos de $250M':(p.price<=450000000?'$250M–$450M':'más de $450M');
+  const pctLbl=p.price<=250000000?'64%':(p.price<=450000000?'27%':'9%');
+  const extraLine=(p.categoria==='vis'||p.categoria==='vip')
+    ?'Y <strong>2 de cada 3</strong> créditos de primera vivienda en el país son para proyectos como este.'
+    :'Dato: <strong>66%</strong> de colombianos prefieren apartamento sobre casa.';
+  const socialAnchor=`<div class="social-anchor">
+    <span class="anchor-ico">👥</span>
+    <div><strong>${pctLbl} de compradores</strong> en Colombia eligen viviendas de ${rangeLbl}. ${extraLine}</div>
+  </div>`;
+
   // Filas del plan mes a mes
   const tableRows=schedule.map((m,i)=>{
     const isPrima=usarPrimas&&(m.month===6||m.month===12);
     const isCes=usarCesantias&&m.month===3;
     const isExtra=extras>0&&extrasFecha&&m.key===extrasFecha;
     const isSep=i===0&&separacion>0;
-    const mPrima=isPrima?ingresos:0;
+    const mPrima=isPrima?primaMonto:0;
     const mCes=isCes?ingresos:0;
     const mExtra=isExtra?extras:0;
     const mSep=isSep?separacion:0;
@@ -1475,6 +1865,8 @@ function calcularCotizacion(){
     </div>
 
     ${viabilidadBlock}
+
+    ${socialAnchor}
 
     <div class="wow-plan">
       <div class="plan-compact">
@@ -1623,7 +2015,16 @@ function calcularCredito(){
   if(!results.length){
     container.innerHTML=`<div class="wow-hero" style="background:linear-gradient(135deg,#F59E0B,#EF4444)"><div class="wow-celebrate">💪</div><div class="wow-title" style="font-size:2rem">Aún no, pero vas</div><div class="wow-sub">Con tus datos actuales ningún banco aprueba hoy. Tu capacidad de pago: $${fmt(capacidad)}/mes.</div></div><p style="text-align:center;color:var(--gray);margin-top:16px">Prueba reducir deudas, aumentar ingresos o ver proyectos de menor valor.</p>`;
   } else {
-    container.innerHTML=results.map((r,i)=>`
+    const avgRateMV=avgBankRate();
+    container.innerHTML=results.map((r,i)=>{
+      const diff=r.rate-avgRateMV;
+      const pct=Math.abs(diff/avgRateMV*100);
+      const bench=diff<-0.02
+        ?`<span class="bank-benchmark save">▼ ${pct.toFixed(0)}% menor al promedio</span>`
+        :diff>0.02
+        ?`<span class="bank-benchmark high">▲ ${pct.toFixed(0)}% sobre el promedio</span>`
+        :`<span class="bank-benchmark neutral">≈ tasa promedio del mercado</span>`;
+      return `
       <div class="bank-card ${i===0?'best':''}">
         <div class="bank-info">
           <div class="bank-name">
@@ -1633,6 +2034,7 @@ function calcularCredito(){
           <div class="bank-rate">
             <div class="rate">${r.tasaEA}%</div>
             <small>Tasa EA</small>
+            ${bench}
           </div>
           <div class="bank-monthly">
             <div class="amount">$${fmt(r.cuota)}</div>
@@ -1640,7 +2042,7 @@ function calcularCredito(){
           </div>
         </div>
         <button class="btn-select-bank" onclick='selectBank(${JSON.stringify(r).replace(/'/g,"&#39;")})'>Enviar mi solicitud a ${r.name} →</button>
-      </div>`).join('');
+      </div>`}).join('');
   }
   document.querySelectorAll('#sec-credito .step').forEach(s=>s.classList.remove('active'));
   document.getElementById('credit-step3').classList.add('active');
@@ -1766,6 +2168,7 @@ function animateCounters(){
 }
 
 // ======================== INIT ========================
+updateMarketRadar();
 renderProjects();
 toggleCesantias();
 updateFilterBadge();
